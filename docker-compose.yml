@@ -3,31 +3,9 @@ version: '3.8'
 services:
   backend:
     build: .
-    container_name: erp_backend
-    env_file:
-      - .env
     ports:
       - "3001:3001"
-    depends_on:
-      - db
-    networks:
-      - erp-network
-
-  db:
-    image: postgres:15
-    container_name: erp_postgres
-    restart: unless-stopped
     environment:
-      POSTGRES_DB: erpdb
-      POSTGRES_USER: erp
-      POSTGRES_PASSWORD: erp123
-    ports:
-      - "5433:5432"
-    networks:
-      - erp-network
-
-networks:
-  erp-network:
-
-volumes:
-  pgdata:
+      JWT_SECRET: supersecretkey123
+      JWT_EXPIRES_IN: 3600s
+    restart: always
