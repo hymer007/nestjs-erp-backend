@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -10,24 +10,32 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string) {
+  async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && await bcrypt.compare(pass, user.password)) {
       const { password, ...result } = user;
       return result;
     }
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(username: string, password: string) {
+    const user = await this.validateUser(username, password);
+    if (!user) {
+      throw new Error('Invalid credentials');
+    }
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(user),
     };
   }
 
-  async register(user: any) {
-    user.password = await bcrypt.hash(user.password, 10);
-    return this.usersService.create(user);
+  async register(username: string, password: string) {
+    const hashed = await bcrypt.hash(password, 10);
+    this.usersService.create({
+      userId: Date.now(),
+      username,
+      password: hashed,
+    });
+    return { message: 'User created' };
   }
 }

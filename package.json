@@ -1,7 +1,6 @@
 {
   "name": "erp-auth",
   "version": "1.0.0",
-  "description": "NestJS Auth example",
   "main": "dist/main.js",
   "scripts": {
     "start": "node dist/main.js",
@@ -25,6 +24,6 @@
     "@nestjs/testing": "^10.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/passport-jwt": "^3.0.6",
-    "typescript": "^5.0.0"
+    "typescript": "^5.3.3"
   }
 }
