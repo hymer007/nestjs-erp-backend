@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   backend:
-    build: ./backend
+    build: .
     container_name: erp_backend
     env_file:
-      - ./backend/.env
+      - .env
     ports:
       - "3001:3001"
     depends_on:
@@ -21,8 +21,6 @@ services:
       POSTGRES_DB: erpdb
       POSTGRES_USER: erp
       POSTGRES_PASSWORD: erp123
-    volumes:
-      - pgdata:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     networks:
