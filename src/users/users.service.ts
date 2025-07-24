@@ -1,16 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.entity';
+
+interface User {
+  userId: number;
+  username: string;
+  password: string;
+}
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [];
+  private readonly users: User[] = [];
 
-  findOne(username: string): User {
+  findOne(username: string): User | undefined {
     return this.users.find(user => user.username === username);
   }
 
-  create(user: User) {
+  addUser(user: User) {
     this.users.push(user);
-    return user;
   }
 }
